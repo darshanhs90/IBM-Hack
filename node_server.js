@@ -49,7 +49,12 @@ var clientTwilio = require('twilio')(accountSid, authToken);
 //send mail from employer to student
 app.get('/sendMail',function(reqst,rspns){
 console.log(reqst.query);//here lies the params
-
+var toEmailAddress=reqst.query;
+var subjectMail;
+var name;
+var companyName;
+var textMail;
+//get from "name","to email address","company name"
 sendgrid.send({
   to:       'hsdars@gmail.com',
   from:     'hsdars@gmail.com',
@@ -64,9 +69,9 @@ sendgrid.send({
 
 //send sms from employer to student
 app.get('/sendSms',function(reqst,respns){
-var from = "+14694509830"; // Optional 
-var to = "+14697672278"; // Required 
-var text = "Hello from Kandy"; // Required 
+var from = "+14694164117"; // Optional 
+var to = "+14697672278"; // Required ,change it
+var text = "Hello from Kandy"; // Required ,change it
 
 
 kandy.sendSms(userAccessToken, from, to, text, function (data, response) {
@@ -82,13 +87,13 @@ kandy.sendSms(userAccessToken, from, to, text, function (data, response) {
 //analyse company score in twitter passing tweet to ibm sentiment analyser
 app.use('/twitterCompanySentiment',function(reqst,respns){
 
-//get name from request
-
-client.get('search/tweets', {q: ip}, function(error, tweets, response){
+//get companyname from request
+var companyName;
+client.get('search/tweets', {q: companyName}, function(error, tweets, response){
    
   var length=(tweets.statuses.length);
   console.log(length);
-  var total;
+  var total=0;
   var count=0;
    (tweets.statuses).forEach(function(e){
     var text=e.text;
@@ -100,8 +105,11 @@ client.get('search/tweets', {q: ip}, function(error, tweets, response){
     console.log(sentiment);
     //asd=sentiment;
     //res.send(asd);
+    total+=sentiment
     });
       });
+   total=total/length;
+   res.send(total);
    });
 });
 
