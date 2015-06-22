@@ -48,6 +48,8 @@ var clientTwilio = require('twilio')(accountSid, authToken);
 
 //send mail from employer to student
 app.get('/sendMail',function(reqst,rspns){
+console.log(reqst.query);//here lies the params
+
 sendgrid.send({
   to:       'hsdars@gmail.com',
   from:     'hsdars@gmail.com',
