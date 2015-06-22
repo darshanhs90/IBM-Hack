@@ -5,9 +5,9 @@ $(function() {
           
           // create our list of different placeholders we'll use
           var placeHolders = new Array();
-          placeHolders[0] = "Search for Toys";
-          placeHolders[1] = "Search for Video Games";
-          placeHolders[2] = "Search for DVDs";
+          placeHolders[0] = "Search for Google";
+          placeHolders[1] = "Search for Microsoft";
+          placeHolders[2] = "Search for Facebook";
           
           // x will be our counter for what placeholder we're currently showing
           var x = 0;
@@ -24,9 +24,9 @@ $(function() {
           }
 	  
           // run this function again in 3 seconds to keep the loop going	
-          setTimeout(changePlaceholder, 3000);
+          setTimeout(changePlaceholder, 1000);
      }
 	
      // start running the changePlaceholder function after 3 seconds
-     t = setTimeout(changePlaceholder, 3000);
+     t = setTimeout(changePlaceholder, 1000);
      });
