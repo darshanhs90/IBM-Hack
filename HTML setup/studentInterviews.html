@@ -676,9 +676,9 @@ new TodoAppView();
 											<header>
 												<h2>My Dashboard</h2>
 											</header>
-                                            <div ><!-- ng-repeat="" -->
+                                            <div ng-repeat="field in dashboardData track by $index"><!-- ng-repeat="" -->
                                             <p>
-                                                <h4>Employer x with email id y of company z has shortlisted/selected you on date</h4>
+                                                <h4>Employer {{field.empname}} with email id {{field.empid}} of company {{field.empcompany}} has {{field.select}} you on {{field.date}}</h4>
                                             </p>
                                             <hr/>
                                             </div>

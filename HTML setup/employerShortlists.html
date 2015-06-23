@@ -10,8 +10,37 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="assets/css/main.css" />
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.theme.css">
+	<link rel="stylesheet" href="assets/css/main.css" />
+		<style>
+.accordion {
+    margin:1em 0
+}
+.accordion h3 {
+    background:#559b6a;
+    color:#fff;
+    cursor:pointer;
+    margin:0 0 1px 0;
+    padding:4px 10px
+}
+.accordion h3.current {
+    background:#4289aa;
+    cursor:default
+}
+.accordion div.pane {
+    padding:5px 10px
+}
+		</style>
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		 <script src="js/jquery.js"></script>
+
+
+
+
+
+
+ <script src="js/bootstrap.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
 		<script src="js/employerShortlists.js"></script>		
 	</head>
@@ -46,41 +75,42 @@
 					<div id="content">
 						<div class="container">
 							<div class="row">
-								<div class="6u 12u(mobile)">
+								<div class="12u 12u(mobile)">
 
 									<!-- Sidebar -->
 										<section>
 											<header>
 												<h2>Shortlisted Students</h2>
-												<h3>Another generic two column layout</h3>
-												<p>asddddddddddddd</p>
-												<p>asddddddddddddd</p>
-												<p>asddddddddddddd</p>
-												<p>asddddddddddddd</p>
+							<div class="accordion">
+    
+    <ASIDE ng-repeat="prof in profiles track by $index"> <h3>{{x.name}} from {{x.university}}</h3>
+
+    <div class="pane">
+        <ASIDE class="jumbotron">
+        	<ASIDE class="form-group col-sm-12">
+      <a href="video_call.html"> <button type="button" class="btn btn-success" ng-show="myForm.$valid" id="btnsbmt" ng-click="makevid()">Make Video Call</button></a><a href="cobrowsing_user.html"> 
+   		 <button type="button" class="btn btn-success" ng-show="myForm.$valid" id="btnsbmt" ng-click="makeshare()">Start Screen Share session</button></a>
+   		 <button type="button" class="btn btn-success" ng-show="myForm.$valid" id="btnsbmt" ng-click="sendaccept($index)">Send Acceptance</button>
+    </ASIDE>
+
+
+
+        </ASIDE>
+    </div>
+    </ASIDE>
+</div>					
+
+
+
+
+
+
 											</header>
 										</section>
 										
 
 								</div>
-								<div class="6u 12u(mobile) important(mobile)">
-
-									<!-- Main Content -->
-										<section>
-											<header>
-												<h2>Video Call Screen</h2>
-												<h3>Another generic two column layout</h3>
-											</header>
-											
-										</section>
-										<section>
-											<header>
-												<h2>Text Editor Screen</h2>
-												<h3>Another generic two column layout</h3>
-											</header>
-											
-										</section>
-
-								</div>
+								
 							</div>
 						</div>
 					</div>

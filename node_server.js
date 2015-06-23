@@ -15,6 +15,8 @@ var client = new Twitter({
   access_token_secret: 'czQre16YZKoC4Csi18gGufu8PxF733aL5VnzbhurlGvHw'
 });
 var watson = require('watson-developer-cloud');
+var MyClient = require('../lib/idol-client.js')('f3129194-4f03-4419-80c2-f3aa041baf9a');
+MyClient.Q.longStackSupport = true;
 var AlchemyAPI = require('alchemy-api');
 var alchemy = new AlchemyAPI('7b6bf4773c39c9e271f6bd999fea5df5179a6dad');
 var apiKey = "DAKa8696003222b4812850342de17d0e267"; // Get from kandy.io 
@@ -34,7 +36,11 @@ var sendgrid  = require('sendgrid')('hsdars', 'Darshanhs90-');
 var accountSid = 'AC07275e4294f1b0d42623c3ec9559911e'; 
 var authToken = '650d049a9bd99323fb899ce4b9e84fcc'; 
 var clientTwilio = require('twilio')(accountSid, authToken); 
-
+var speech_to_text = watson.speech_to_text({
+  username: '1a4e2a43-2a65-4e28-b9bc-2947c6a48e47',
+  password: 'WNMkUbFzLf6c',
+  version: 'v1'
+});
 //company ip declaration
 
 // var ips=['0','23.13.169.35','23.196.118.201','23.195.87.224','64.233.183.105',
@@ -137,6 +143,32 @@ app.use('/linkedjobsfeed',function(req,res){
 //analyse insights based on voice response using ibm
 app.get('/personalityinsights',function(reqst,respns){
 
+//provide url
+url = url.replace(/\//g, '%2F');
+url=url.replace(":","%3A");
+//console.log(url);
+//https.get('https://api.idolondemand.com/1/api/async/recognizespeech/v1?url=http%3A%2F%2Fwww.talkenglish.com%2FAudioTE%2FL21%2Fsentence%2FL21S5.mp3&interval=0&apikey=f3129194-4f03-4419-80c2-f3aa041baf9a',function(res){
+https.get('https://api.idolondemand.com/1/api/async/recognizespeech/v1?url='+url+'&apikey=f3129194-4f03-4419-80c2-f3aa041baf9a',function(res){
+
+var data='';
+res.on('data', function(d) {
+    data+=d;
+});
+res.on('end',function(data1){
+    //console.log(data);
+    data=JSON.parse(data);
+    //console.log(data);
+    jobID=data.jobID;
+     https.get('https://api.idolondemand.com/1/job/result/'+jobID+'?apikey=f3129194-4f03-4419-80c2-f3aa041baf9a',function(res){
+        
+        var dt1='';
+        res.on('data', function(dt) {
+            dt1+=dt;
+        });
+        res.on('end',function(dtt){
+            var x=(JSON.parse(dt1));
+            var textval=(x.actions[0].result.document[0].content);
+
 
 var personality_insights = watson.personality_insights({
         "username": "aa358f77-75ab-4560-82ed-bbf4aa1c1b4b",
@@ -145,14 +177,14 @@ var personality_insights = watson.personality_insights({
 });
 
 personality_insights.profile({
-  text: 'Knowing that millions of people around the world would be watching in person and on television and expecting great things from him — at least one more gold medal for America, if not another world record — during this, his fourth and surely his last appearance in the World Olympics, and realizing that his legs could no longer carry him down the runway with the same blazing speed and confidence in making a huge, eye-popping leap that they were capable of a few years ago when he set world records in the 100-meter dash and in the 400-meter relay and won a silver medal in the long jump, the renowned sprinter and track-and-field personality Carl Lewis, who had known pressure from fans and media before but never, even as a professional runner, this kind of pressure, made only a few appearances in races during the few months before the Summer Olympics in Atlanta, Georgia, partly because he was afraid of raising expectations even higher and he did not want to be distracted by interviews and adoring fans who would follow him into stores and restaurants demanding autographs and photo-opportunities, but mostly because he wanted to conserve his energies and concentrate, like a martial arts expert, on the job at hand: winning his favorite competition, the long jump, and bringing home another Gold Medal for the United States, the most fitting conclusion to his brilliant career in track and field.' },
+  text: textval},
   function (err, response) {
     if (err)
       console.log('error:', err);
     else
       console.log(JSON.stringify(response, null, 2));
 });
-
+});
 });
 
 //call notification with questions

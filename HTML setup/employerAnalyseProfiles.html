@@ -10,10 +10,35 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="assets/css/main.css" />
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.theme.css">
+	<link rel="stylesheet" href="assets/css/main.css" />
+		<style>
+.accordion {
+    margin:1em 0
+}
+.accordion h3 {
+    background:#559b6a;
+    color:#fff;
+    cursor:pointer;
+    margin:0 0 1px 0;
+    padding:4px 10px
+}
+.accordion h3.current {
+    background:#4289aa;
+    cursor:default
+}
+.accordion div.pane {
+    padding:5px 10px
+}
+		</style>
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+  <script src="js/jquery.js"></script>
+ <script src="js/bootstrap.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-		<script src="js/employerAnalyseProfiles.js"></script>		
+
+		<script src="js/employerAnalyseProfiles.js"></script>	
+
 	</head>
 	<body class="subpage">
 		<div id="page-wrapper">
@@ -54,7 +79,34 @@
 												<h2>Analyse Profiles</h2>
 												<h3>A generic two column layout</h3>
 											</header>
-											
+											<div class="accordion">
+    
+    <ASIDE ng-repeat="prof in profiles track by $index"> <h3>{{x.name}} from {{x.university}}</h3>
+
+    <div class="pane">
+        <ASIDE class="jumbotron">
+        	<ASIDE class="form-group col-sm-12">
+       <button type="button" class="btn btn-success" ng-show="myForm.$valid" id="btnsbmt" ng-click="setupcall($index)">Setup Voice Call</button>
+   		 <button type="button" class="btn btn-success" ng-show="myForm.$valid" id="btnsbmt" ng-click="analyse($index)">Analyse Profile</button>
+   		 <button type="button" class="btn btn-success" ng-show="myForm.$valid" id="btnsbmt" ng-click="shortlist($index)">Shortlist</button>
+   		 <button type="button" class="btn btn-success" ng-show="myForm.$valid" id="btnsbmt" ng-click="reject($index)">Reject</button>
+   		<button type="button" class="btn btn-success" ng-show="myForm.$valid" id="btnsbmt" ng-click="resume($index)">View Resume</button>
+   		<embed id="pdfViewer" ng-src="{{prof.pdflink}}"  width="500" height="375" type='application/pdf'>
+    </ASIDE>
+
+
+
+        </ASIDE>
+    </div>
+    </ASIDE>
+</div>
+
+
+
+
+
+
+
 										</section>
 
 								</div>
