@@ -172,5 +172,48 @@ clientTwilio.calls.create({
 });
 
 });
+
+//get company info
+app.get('/companyInfo',function(reqst,respns){
+//company website
+https.get('https://api.fullcontact.com/v2/company/lookup.json?domain=google.com&apiKey=f6e2b2695278badc',
+  function(response){
+   var body = '';
+        response.on('data', function(d) {
+            body += d;
+        });
+    response.on('end', function() {
+
+            // Data reception is done, do whatever with it!
+            var parsed = JSON.parse(body);
+            console.log('linkedin');
+            res.send(parsed);
+        });
+
+});
+
+});
+
+//get student info
+app.get('/personInfo',function(reqst,respns){
+//person email id  
+https.get('https://api.fullcontact.com/v2/person.json?email=bart@fullcontact.com&apiKey=f6e2b2695278badc',
+  function(response){
+   var body = '';
+        response.on('data', function(d) {
+            body += d;
+        });
+    response.on('end', function() {
+
+            // Data reception is done, do whatever with it!
+            var parsed = JSON.parse(body);
+            console.log('linkedin');
+            res.send(parsed);
+        });
+
+});
+
+});
+
 app.listen(1337,'127.0.0.1');
        
