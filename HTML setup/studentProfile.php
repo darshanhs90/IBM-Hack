@@ -1,3 +1,30 @@
+<?php 
+	//error_reporting(0);
+	require("config.php");
+	$conn = new mysqli($host, $username, $password, $dbname);
+	if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+	if(empty($_SESSION['user'])) 
+    {
+        header("Location: index.php");
+        die("Redirecting to index.php"); 
+    }
+   $semail = $_SESSION['user']['email'];
+   $query = "select fname,lname,email,password,univname,resumelink from users1 where email = '$semail'"; 
+   $result = $conn->query($query);
+         
+        while ($line = $result->fetch_assoc()) { 
+   		$fname=$line['fname'];
+   		$lname=$line['lname'];
+		$email=$line['email'];
+		$password=$line['password'];
+		$univname=$line['univname'];
+		$resumelink=$line['resumelink'];
+		}
+		 
+ ?>
+
 <!DOCTYPE HTML>
 <!--
 	Halcyonic by HTML5 UP
@@ -10,35 +37,14 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
-	<link rel="stylesheet" href="css/bootstrap.min.css">
+		  <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap.min.theme.css">
-	<link rel="stylesheet" href="assets/css/main.css" />
-		<style>
-.accordion {
-    margin:1em 0
-}
-.accordion h3 {
-    background:#559b6a;
-    color:#fff;
-    cursor:pointer;
-    margin:0 0 1px 0;
-    padding:4px 10px
-}
-.accordion h3.current {
-    background:#4289aa;
-    cursor:default
-}
-.accordion div.pane {
-    padding:5px 10px
-}
-		</style>
+		<link rel="stylesheet" href="assets/css/main.css" />
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
-  <script src="js/jquery.js"></script>
- <script src="js/bootstrap.min.js"></script>
+		 <script src="js/bootstrap.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
 
-		<script src="js/employerAnalyseProfiles.js"></script>	
-
+		<script src="js/studentProfile.js"></script>		
 	</head>
 	<body class="subpage">
 		<div id="page-wrapper">
@@ -50,15 +56,15 @@
 							<div class="12u">
 
 								<!-- Logo -->
-									<h1><a href="#" id="logo">Techruit-Employer</a></h1>
+									<h1><a href="#" id="logo">Techruit-Student</a></h1>
 
 								<!-- Nav -->
 									<nav id="nav">
-										<a href="employerPostLoginHome.html">Homepage</a>
-										<a href="employerInterviews.html">Interview Dashboard</a>
-										<a href="employerAnalyseProfiles.html">Analyse Profiles</a>
-										<a href="employerShortlists.html">Shortlisted Students</a>
-										<a href="employerProfile.html">My Profile</a>
+										<a href="studentPostLoginHome.html">Homepage</a>
+										<a href="studentInterviews.html">Interview Dashboard</a>
+										<a href="studentCompanyInsights.html">Company Insights</a>
+										<a href="studentZone.html">Interview Zone</a>
+										<a href="studentProfile.html">My Profile</a>
 									</nav>
 
 							</div>
@@ -71,35 +77,55 @@
 					<div id="content">
 						<div class="container">
 							<div class="row">
-								<div class="9u 12u(mobile)">
+								<div class="12u">
 
 									<!-- Main Content -->
-										<section>
+										<section >
 											<header>
-												<h2>Analyse Profiles</h2>
-												<h3>A generic two column layout</h3>
+												<h2>My Profile</h2>
 											</header>
-											<div class="accordion">
-    
-    <ASIDE ng-repeat="prof in profiles track by $index"> <h3>{{x.name}} from {{x.university}}</h3>
-
-    <div class="pane">
-        <ASIDE class="jumbotron">
-        	<ASIDE class="form-group col-sm-12">
-       <button type="button" class="btn btn-success" ng-show="myForm.$valid" id="btnsbmt" ng-click="setupcall($index)">Setup Voice Call</button>
-   		 <button type="button" class="btn btn-success" ng-show="myForm.$valid" id="btnsbmt" ng-click="analyse($index)">Analyse Profile</button>
-   		 <button type="button" class="btn btn-success" ng-show="myForm.$valid" id="btnsbmt" ng-click="shortlist($index)">Shortlist</button>
-   		 <button type="button" class="btn btn-success" ng-show="myForm.$valid" id="btnsbmt" ng-click="reject($index)">Reject</button>
-   		<button type="button" class="btn btn-success" ng-show="myForm.$valid" id="btnsbmt" ng-click="resume($index)">View Resume</button>
-   		<embed id="pdfViewer" ng-src="{{prof.pdflink}}"  width="500" height="375" type='application/pdf'>
-    </ASIDE>
-
-
-
-        </ASIDE>
+											
+											<div class="row">
+    <div class="jumbotron col-sm-12" >
+    <form action="updateStudentProfile.php" method="post" role="form" class="col-sm-6" name="myForm" novalidate>
+       <div class="row">
+       <div class="form-group col-sm-6">
+      <label for="name">First Name:</label>
+      <input type="text" class="form-control" id="fname" placeholder="Enter Firstname" required="true" value='<?php echo $fname; ?>' >
     </div>
-    </ASIDE>
-</div>
+       <div class="form-group col-sm-6">
+      <label for="name">Last Name:</label>
+      <input type="text" class="form-control" id="lname" placeholder="Enter Lastname" required="true" value="<?php echo $lname; ?>">
+    </div>
+       </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" class="form-control" id="email" placeholder="Enter email" required="true" disabled="true" value="<?php echo $email; ?>">
+    </div>
+    <div class="form-group">
+      <label for="pwd">Password:</label>
+      <input type="password" class="form-control" id="pwd" placeholder="Change password" required="true"  title="Minimum Password Length is 8 Characters" value="<?php echo $password; ?>">
+    </div>
+   <div class="form-group">
+      <label for="lcn">University Name:</label>
+      <input type="text" class="form-control" id="lcn" placeholder="Enter University Name" required="true" value="<?php echo $univname; ?>">
+    </div>
+    <div class="form-group">
+      <label for="ppic" title="Use sites like postimage.org" >Resume Link</label>
+      <input type="url" class="form-control" id="ppic" placeholder="Enter Url Link(Use AWS cloud for file storage)" required="true" title="Use sites like postimage.org" value="<?php echo $resumelink; ?>">
+    </div>    
+    <button type="submit" class="btn btn-default" ng-show="myForm.$invalid" ng-disabled="myForm.$invalid" id="sbmt">Update Changes</button>
+    <!-- <button type="button" class="btn btn-success" ng-show="myForm.$valid" id="btnsbmt" >Update Changes</button> -->
+    </form>
+    <div class="col-sm-6" style="margin:auto;" align="center" >
+   <!-- <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=darshanhs"  alt="Mountain View" style="width:200px;height:200px; ">
+    <div>
+    <span>QR Code</span>
+    </div>-->
+    </div>
+  </div>
+
+
 
 
 
@@ -108,25 +134,6 @@
 
 
 										</section>
-
-								</div>
-								<div class="3u 12u(mobile)">
-
-									<!-- Sidebar -->
-										<section>
-											<header>
-												<h2>Magna Phasellus</h2>
-											</header>
-											<ul class="link-list">
-												<li><a href="#">Sed dolore viverra</a></li>
-												<li><a href="#">Ligula non varius</a></li>
-												<li><a href="#">Nec sociis natoque</a></li>
-												<li><a href="#">Penatibus et magnis</a></li>
-												<li><a href="#">Dis parturient montes</a></li>
-												<li><a href="#">Nascetur ridiculus</a></li>
-											</ul>
-										</section>
-										
 
 								</div>
 							</div>

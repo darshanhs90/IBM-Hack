@@ -1,3 +1,15 @@
+<?php
+session_start();
+if(!isset($_SESSION['user'])) {
+header("location: login.php");
+exit();
+}
+/*else{
+echo $_SESSION['user'];
+}*/
+?>
+
+
 <!DOCTYPE HTML>
 <!--
 	Halcyonic by HTML5 UP
@@ -29,11 +41,11 @@
 
 								<!-- Nav -->
 									<nav id="nav">
-										<a href="employerPostLoginHome.html">Homepage</a>
-										<a href="employerInterviews.html">Interview Dashboard</a>
-										<a href="employerAnalyseProfiles.html">Analyse Profiles</a>
-										<a href="employerShortlists.html">Shortlisted Students</a>
-										<a href="employerProfile.html">My Profile</a>
+										<a href="employerPostLoginHome.php">Homepage</a>
+										<a href="employerInterviews.php">Interview Dashboard</a>
+										<a href="employerAnalyseProfiles.php">Analyse Profiles</a>
+										<a href="employerShortlists.php">Shortlisted Students</a>
+										<a href="employerProfile.php">My Profile</a>
 									</nav>
 
 							</div>

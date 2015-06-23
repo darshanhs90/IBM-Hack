@@ -12,34 +12,39 @@ var app=angular.module('myApp',[]);
 app.controller('myCtrl',function($scope,$http) {
 
 $scope.txtarra=$scope.txtarra.replace(' #','23');
+//phpcall
 
-$http({
-    url: 'http://172.20.10.3:1337/postmultstat', 
-    method: "GET",
-    params: {recip:$scope.rcpt,txtval: $scope.txtarra}
- }).success(function(data, status, headers, config) {
-    alert(data);
- });
+
 
 
 $scope.sendaccept=function($val){
 	//pass phone number
+    var number=$scope.profiles[$val].pnumber;
+    var textval='You have been offered a job by '+$scope.profiles[$val].email+' from company '+$scope.profiles[$val].company;
+    
 	alert('setupcall');
             $http({
-    url: 'http://172.20.10.3:1337/schedulecallnotification', 
+    url: 'http://127.0.0.1:1337/schedulecallnotification', 
     method: "GET",
-    params: {recip:$scope.rcpt,txtval: $scope.txtarra}
+    params: {number:number,textval:'2'}
  }).success(function(data, status, headers, config) {
 
     alert(data);
     $http({
-    url: 'http://172.20.10.3:1337/setupcall', 
+    url: 'http://127.0.0.1:1337/sendSms', 
     method: "GET",
-    params: {recip:$scope.rcpt,txtval: $scope.txtarra}
+    params: {number:number,textval:textval}
  }).success(function(data, status, headers, config) {
     alert(data);
  });
 
+ $http({
+    url: 'http://127.0.0.1:1337/sendEmail', 
+    method: "GET",
+    params: {number:number,textval:textval}
+ }).success(function(data, status, headers, config) {
+    alert(data);
+ });
 
 
  });

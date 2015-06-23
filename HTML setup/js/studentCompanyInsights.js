@@ -30,13 +30,30 @@ function changePlaceholder() {
      
      // start running the changePlaceholder function after 3 seconds
      t = setTimeout(changePlaceholder, 1000);
+
+$scope.search=function(){
+
+
 $http({
-    url: 'http://172.20.10.3:1337/postmultstat', 
+    url: 'http://172.20.10.3:1337/companyInfo', 
     method: "GET",
-    params: {recip:$scope.rcpt,txtval: $scope.txtarra}
+    params: {company:$scope.company}
  }).success(function(data, status, headers, config) {
     alert(data);
  });
+}
+
+$scope.srch=function(){
+
+
+$http({
+    url: 'http://172.20.10.3:1337/twitterCompanySentiment', 
+    method: "GET",
+    params: {company:$scope.searchBox}
+ }).success(function(data, status, headers, config) {
+    alert(data);
+ });
+}
 
 
 });

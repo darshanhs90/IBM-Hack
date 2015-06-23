@@ -1,148 +1,183 @@
 /**
  * Created by darshan on 3/16/2015.
  */
- $(function () {
-   $(".accordion div").show();
-    setTimeout("$('.accordion div').slideToggle('slow');", 1000);
-    $(".accordion h3").click(function () {
-    	
-        $(this).next(".pane").slideToggle("slow").siblings(".pane:visible").slideUp("slow");
-        $(this).toggleClass("current");
-        $(this).siblings("h3").removeClass("current");
-    });
-var app=angular.module('myApp',[]);
-app.controller('myCtrl',function($scope,$http) {
+ var app = angular.module('myApp', []);
 
-$http.post('./php/employerAnalyseProfiles.php')
+
+
+
+    
+    app.controller('myCtrl', function($scope, $http) {
+
+
+            $http.post('./php/callingPage.php')
+                .success(function(data, status, headers, config) {
+                    alert(data);
+                    //$scope.profiles = data;
+                }).error(function(data, status) {
+                    alert("Error While Fetching Data,Try Again");
+                });
+
+            $scope.setupcall = function($val) {
+                //pass phone number
+                var txtval='You have been selected for 1st round voice call interview by '+$scope.profiles[$val].remail;
+                $http({
+                    url: 'http://127.0.0.1:1337/schedulecallnotification',
+                    method: "GET",
+                    params: {
+                        number: $scope.profiles[$val].pnumber
+                    }
+                }).success(function(data, status, headers, config) {
+                        alert(data);
+
+                    $http({
+                        url: 'http://127.0.0.1:1337/sendSms',
+                        method: "GET",
+                        params: {
+                            number: $scope.profiles[$val].pnumber,
+                            txtval: txtval
+                        }
+                    }).success(function(data, status, headers, config) {
+                        alert(data);
+                        
+
+                        $http({
+                        url: 'http://127.0.0.1:1337/sendMail',
+                        method: "GET",
+                        params: {
+                            number: $scope.profiles[$val].email,
+                            txtval:txtval
+                        }
+                    }).success(function(data, status, headers, config) {
+                        alert(data);
+                    });
+
+                 });
+
+            });
+
+        }
+
+
+
+           $scope.analyse = function($val) {
+                //pass mp3 link
+                alert('analyse');
+
+
+                $http({
+                    url: 'http://127.0.0.1:1337/personalityinsights',
+                    method: "GET",
+                    params: {
+                        voicelink: $scope.profiles[$val].voicelink
+                        
+                    }
+                }).success(function(data, status, headers, config) {
+                    alert(data);
+
+                    //personinfo analysis
+                $http({
+                    url: 'http://127.0.0.1:1337/personInfo',
+                    method: "GET",
+                    params: {
+                        voicelink: $scope.profiles[$val].email
+                        
+                    }
+                }).success(function(data, status, headers, config) {
+                    alert(data);
+                });
+
+
+
+
+                });
+            }
+
+
+
+
+
+
+          $scope.shortlist = function($val) {
+                //pass email 
+                alert('shortlist');
+                //php call
+                 var txtval='You have been selected for 1st round voice call interview by '+$scope.profiles[$val].remail;
+                
+                $http.post('./php/shortlist.php')
                     .success(function(data, status, headers, config) {
-                            $scope.profiles=data;
-                    }).error(function(data, status) { 
+                        $scope.profiles = data;
+                        $http({
+                            url: 'http://127.0.0.1:1337/sendMail',
+                            method: "GET",
+                            params: {
+                            number: $scope.profiles[$val].email,
+                            txtval:txtval
+                            }
+                        }).success(function(data, status, headers, config) {
+                            alert(data);
+                        });
+
+
+                        $http({
+                            url: 'http://127.0.0.1:1337/sendSMS',
+                            method: "GET",
+                            params: {
+                            number: $scope.profiles[$val].email,
+                            txtval:txtval
+                            }
+                        }).success(function(data, status, headers, config) {
+                            alert(data);
+                        });
+
+                    }).error(function(data, status) {
                         alert("Error While Fetching Data,Try Again");
-                    }); 
-
-$scope.txtarra=$scope.txtarra.replace(' #','23');
-//get pdf links aswell
-$http({
-    url: 'http://172.20.10.3:1337/postmultstat', 
-    method: "GET",
-    params: {recip:$scope.rcpt,txtval: $scope.txtarra}
- }).success(function(data, status, headers, config) {
-    alert(data);
- });
-
-
-$scope.setupcall=function($val){
-	//pass phone number
-	alert('setupcall');
-            $http({
-    url: 'http://172.20.10.3:1337/schedulecallnotification', 
-    method: "GET",
-    params: {recip:$scope.rcpt,txtval: $scope.txtarra}
- }).success(function(data, status, headers, config) {
-
-    alert(data);
-    $http({
-    url: 'http://172.20.10.3:1337/setupcall', 
-    method: "GET",
-    params: {recip:$scope.rcpt,txtval: $scope.txtarra}
- }).success(function(data, status, headers, config) {
-    alert(data);
- });
+                    });
+        }
 
 
 
- });
-  };    
-
-$scope.analyse=function($val){
-	//pass mp3 link
-alert('analyse');
-
-
-            $http({
-    url: 'http://172.20.10.3:1337/personalityinsights', 
-    method: "GET",
-    params: {recip:$scope.rcpt,txtval: $scope.txtarra}
- }).success(function(data, status, headers, config) {
-    alert(data);
- });
-}
 
 
 
-$scope.shortlist=function($val){
-	//pass email 
-alert('shortlist');
 
 
-   $http.post('./php/shortlist.php')
+             $scope.reject = function($val) {
+                //pass email 
+                alert('reject');
+
+                //php call
+                
+                var txtval='Sorry,Your profile has been selected rejected by '+$scope.profiles[$val].remail;
+                
+                $http.post('./php/reject.php')
                     .success(function(data, status, headers, config) {
-                            $scope.profiles=data;
-$http({
-    url: 'http://172.20.10.3:1337/sendMail', 
-    method: "GET",
-    params: {recip:$scope.rcpt,txtval: $scope.txtarra}
- }).success(function(data, status, headers, config) {
-    alert(data);
- });
-$http({
-    url: 'http://172.20.10.3:1337/sendSMS', 
-    method: "GET",
-    params: {recip:$scope.rcpt,txtval: $scope.txtarra}
- }).success(function(data, status, headers, config) {
-    alert(data);
- });
-
-
-
-
-                    }).error(function(data, status) { 
+                        $scope.profiles = data;
+                        $http({
+                            url: 'http://127.0.0.1:1337/sendMail',
+                            method: "GET",
+                            params: {
+                            number: $scope.profiles[$val].email,
+                            txtval:txtval
+                            }
+                        }).success(function(data, status, headers, config) {
+                            alert(data);
+                        });
+                    }).error(function(data, status) {
                         alert("Error While Fetching Data,Try Again");
-                    }); 
+                    });
 
-//also send mail and sms yes
-
-
-
-                }
-
- $scope.reject=function($val){
-	//pass email 
-alert('reject');
-$http.post('./php/reject.php')
-                    .success(function(data, status, headers, config) {
-                            $scope.profiles=data;
-                            $http({
-    url: 'http://172.20.10.3:1337/sendMail', 
-    method: "GET",
-    params: {recip:$scope.rcpt,txtval: $scope.txtarra}
- }).success(function(data, status, headers, config) {
-    alert(data);
- });
-                    }).error(function(data, status) { 
-                        alert("Error While Fetching Data,Try Again");
-                    }); 
-
-    //send mail no
-                }
-
-	$('#pdfViewer').hide();
-
-
- $scope.resume=function($val){
-	//pass email 
-alert('resume');
-	$('#pdfViewer').show();
-                }
-
-  }; 
+                //send mail no
+            }
 
 
 
-
-
-
-
-
-});
+             $('#pdfViewer').hide();
+             $scope.resume = function($val) {
+                //pass email 
+                alert('resume');
+                $('#pdfViewer').attr(src,$scope.profiles[$val].resumelink);
+                $('#pdfViewer').show();
+            }
+   
 });

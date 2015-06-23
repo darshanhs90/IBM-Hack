@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!isset($_SESSION['user_mail'])) {
+if(!isset($_SESSION['user'])) {
   header("location: login.php");
   exit();
 }
@@ -132,12 +132,12 @@ if(!isset($_SESSION['user_mail'])) {
 
 								<!-- Nav -->
 									<nav id="nav">
-										<a href="employerPostLoginHome.html">Homepage</a>
-										<a href="employerInterviews.html">Interview Dashboard</a>
-										<a href="employerAnalyseProfiles.html">Analyse Profiles</a>
-										<a href="employerShortlists.html">Shortlisted Students</a>
-										<a href="employerProfile.html">My Profile</a>
-									</nav>
+                                        <a href="employerPostLoginHome.php">Homepage</a>
+                                        <a href="employerInterviews.php">Interview Dashboard</a>
+                                        <a href="employerAnalyseProfiles.php">Analyse Profiles</a>
+                                        <a href="employerShortlists.php">Shortlisted Students</a>
+                                        <a href="employerProfile.php">My Profile</a>
+                                    </nav>
 
 							</div>
 						</div>
@@ -686,7 +686,7 @@ new TodoAppView();
 											</header>
                                             <div ng-repeat="field in dashboardData track by $index"><!-- ng-repeat="" -->
                                             <p>
-                                                <h4>Employer {{field.empname}} with email id {{field.empid}} of company {{field.empcompany}} has {{field.select}} you on {{field.date}}</h4>
+                                                <h4>Employer with email id {{field.remail}} of company {{field.cname}} has {{field.analysed}} you on {{field.ts}}</h4>
                                             </p>
                                             <hr/>
                                             </div>
