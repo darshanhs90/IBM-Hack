@@ -35,7 +35,7 @@ $scope.search=function(){
 
 
 $http({
-    url: 'http://172.20.10.3:1337/companyInfo', 
+    url: 'http://127.0.0.1:1337/companyInfo', 
     method: "GET",
     params: {company:$scope.company}
  }).success(function(data, status, headers, config) {
@@ -77,7 +77,7 @@ $scope.srch=function(){
 
 
 $http({
-    url: 'http://172.20.10.3:1337/twitterCompanySentiment', 
+    url: 'http://127.0.0.1:1337/twitterCompanySentiment', 
     method: "GET",
     params: {company:$scope.searchBox}
  }).success(function(data, status, headers, config) {
