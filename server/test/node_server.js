@@ -147,8 +147,8 @@ app.use('/linkedjobsfeed', function(req, res) {
 });
 
 //analyse insights based on voice response using ibm
-app.get('/personalityinsights', function(reqst, respns) {
-            var url=reqst.query.url;
+app.get('/convert', function(reqst, respns) {
+            var url=reqst.query.voicelink;
             url = url.replace(/\//g, '%2F');
             url = url.replace(":", "%3A");
             //console.log(url);
@@ -162,39 +162,51 @@ app.get('/personalityinsights', function(reqst, respns) {
                         res.on('end', function(data1) {
                                     //console.log(data);
                                     data = JSON.parse(data);
-                                    //console.log(data);
-                                    jobID = data.jobID;
+                                    console.log(data);
+                                    var jobID = data.jobID;
                                     https.get('https://api.idolondemand.com/1/job/result/' + jobID + '?apikey=f3129194-4f03-4419-80c2-f3aa041baf9a', function(res) {
 
                                         var dt1 = '';
                                         res.on('data', function(dt) {
+                                            console.log(dt1);
                                             dt1 += dt;
                                         });
                                         res.on('end', function(dtt) {
                                             var x = (JSON.parse(dt1));
                                             var textval = (x.actions[0].result.document[0].content);
 
+                                            console.log(textval);
 
-                                            var personality_insights = watson.personality_insights({
+                                        
+                                        });
+                                    });
+            });
+      });
+ });
+
+app.get('/personalityinsights', function(reqst, respns) {
+
+  var personality_insights = watson.personality_insights({
                                                 "username": "aa358f77-75ab-4560-82ed-bbf4aa1c1b4b",
                                                 "password": "Mo0l98NbJP01",
                                                 version: 'v2'
                                             });
 
                                             personality_insights.profile({
-                                                    text: textval
+                                                    text: reqst.query.voicelink   
                                                 },
                                                 function(err, response) {
                                                     if (err)
                                                         console.log('error:', err);
                                                     else
-                                                        console.log(JSON.stringify(response, null, 2));
+                                                       respns.end(JSON.stringify(response));
                                                 });
                                         });
-                                    });
-            });
-      });
- });
+
+
+
+
+
                                     //call notification with questions
                                     app.get('/schedulecallnotification', function(reqst, respns) {
                                       console.log(reqst.query);
@@ -245,7 +257,7 @@ app.get('/personalityinsights', function(reqst, respns) {
                                     app.get('/personInfo', function(reqst, respns) {
                                         //person email id  
                                         var email=reqst.query.email;
-                                        https.get('https://api.fullcontact.com/v2/person.json?email='+email+&apiKey=f6e2b2695278badc',
+                                        https.get('https://api.fullcontact.com/v2/person.json?email='+email+'&apiKey=f6e2b2695278badc',
                                             function(response) {
                                                 var body = '';
                                                 response.on('data', function(d) {
@@ -256,7 +268,7 @@ app.get('/personalityinsights', function(reqst, respns) {
                                                     // Data reception is done, do whatever with it!
                                                     var parsed = JSON.parse(body);
                                                     console.log('linkedin');
-                                                    res.send(parsed);
+                                                    respns.send(parsed);
                                                 });
 
                                             });
