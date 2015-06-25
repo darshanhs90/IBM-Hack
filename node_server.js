@@ -32,7 +32,7 @@ kandy.getUserAccessToken(userId, password, function(data, response) {
 });
 
 kandy = new Kandy();
-var sendgrid = require('sendgrid')('hsdars', 'Darshanhs90-');
+var sendgrid = require('sendgrid')('username', 'password');
 var accountSid = 'AC07275e4294f1b0d42623c3ec9559911e';
 var authToken = '650d049a9bd99323fb899ce4b9e84fcc';
 var clientTwilio = require('twilio')(accountSid, authToken);
