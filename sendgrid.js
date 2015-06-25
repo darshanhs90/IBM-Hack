@@ -1,4 +1,4 @@
-var sendgrid  = require('sendgrid')('hsdars', 'Darshanhs90-');
+var sendgrid  = require('sendgrid')('username', 'password');
 sendgrid.send({
   to:       'hsdars@gmail.com',
   from:     'hsdars@gmail.com',
