@@ -31,7 +31,7 @@
                         alert(data);
 
                     $http({
-                        url: 'http://127.0.0.1:1337/sendSms',
+                        url: 'http://52.5.131.72/sendSms',
                         method: "GET",
                         params: {
                             number: $scope.profiles[$val].pnumber,
@@ -71,7 +71,7 @@
                 if(mp3.length>150){
 
                 $http({
-                    url: 'http://127.0.0.1:1337/personalityinsights',
+                    url: 'http://52.5.131.72:1337/personalityinsights',
                     method: "GET",
                     params: {
                         voicelink: mp3
@@ -88,7 +88,7 @@
 
                     //personinfo analysis
                 $http({
-                    url: 'http://127.0.0.1:1337/personInfo',
+                    url: 'http://52.5.131.72:1337/personInfo',
                     method: "GET",
                     params: {
                         email: email
