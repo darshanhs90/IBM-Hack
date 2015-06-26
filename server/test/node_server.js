@@ -7,6 +7,7 @@ var cors = require('cors')
 var express = require('express');
 var app = express();
 app.use(cors());
+var lodash=require('lodash');
 var Twitter = require('twitter');
 var client = new Twitter({
     consumer_key: 'LmNp3JwAQZnuBr4SQFaM7UZG3',
@@ -185,7 +186,7 @@ app.get('/convert', function(reqst, respns) {
  });
 
 app.get('/personalityinsights', function(reqst, respns) {
-
+//use lodash to send a single string
   var personality_insights = watson.personality_insights({
                                                 "username": "aa358f77-75ab-4560-82ed-bbf4aa1c1b4b",
                                                 "password": "Mo0l98NbJP01",
