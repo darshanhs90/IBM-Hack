@@ -1,14 +1,14 @@
 // Twilio Credentials 
-var accountSid = 'AC07275e4294f1b0d42623c3ec9559911e'; 
-var authToken = '650d049a9bd99323fb899ce4b9e84fcc'; 
+var accountSid = 'id'; 
+var authToken = 'token'; 
  
 //require the Twilio module and create a REST client 
 var clientTwilio = require('twilio')(accountSid, authToken); 
  
 clientTwilio.calls.create({ 
-	to: "+14697672278", 
-	from: "+14694164117", 
-	url: "https://www.dropbox.com/s/3nsmfduffri1lg5/twilio.xml",  
+	to: "+num", 
+	from: "+othnum", 
+	url: "fileurl",  
 	method: "GET",  
 	fallbackMethod: "GET",  
 	statusCallbackMethod: "GET",    
